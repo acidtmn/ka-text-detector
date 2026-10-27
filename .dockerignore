@@ -20,3 +20,10 @@ samples/
 .claude/
 .github/
 setup.sh
+
+models/upstream-*/
+models/ka-*/
+artifacts/
+corpora/
+runs/
+.env

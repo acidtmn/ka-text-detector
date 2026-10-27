@@ -1,9 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
+set -euo pipefail
 # Оркестратор v4: ждёт конца генерации -> split -> train -> calibrate -> evaluate.
 # Каждый шаг логируется в /tmp/v4_log.txt; полный вывод в /tmp/v4_pipeline.log.
 # v3-артефакты НЕ трогаются. Останавливается на первой ошибке (пишет STAGE_FAILED).
 cd "$(dirname "$0")/.."          # корень репозитория (скрипт лежит в training/)
-source venv/bin/activate
+if [ -f venv/bin/activate ]; then source venv/bin/activate; fi
 PLOG=/tmp/v4_pipeline.log
 SLOG=/tmp/v4_log.txt
 : > "$PLOG"
@@ -39,7 +40,7 @@ log "STAGE calibrate_v4"
 python training/calibrate_v4.py >> "$PLOG" 2>&1 || { log "STAGE_FAILED calibrate_v4"; exit 4; }
 
 log "STAGE evaluate_v4"
-python training/evaluate_v4.py >> "$PLOG" 2>&1 || { log "STAGE_FAILED evaluate_v4"; exit 5; }
+python evaluation/evaluate_v4.py >> "$PLOG" 2>&1 || { log "STAGE_FAILED evaluate_v4"; exit 5; }
 
 log "ORCH: ПАЙПЛАЙН ЗАВЕРШЁН. Итоги — в /tmp/v4_pipeline.log и data/v4_eval.json"
 log "PIPELINE_DONE"

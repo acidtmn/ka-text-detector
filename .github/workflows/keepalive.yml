@@ -13,18 +13,17 @@
 name: keepalive
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"   # каждые 6 часов (запас к 48-часовому простою)
-  workflow_dispatch: {}      # ручной запуск из вкладки Actions
+  workflow_dispatch: {}      # KA: no automatic pings to the original author's Space
 
 jobs:
   ping:
+    if: ${{ vars.SPACE_URL != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Ping Space /health
         env:
           # repo-variable SPACE_URL перекрывает хардкод, если задана; иначе — дефолт
-          SPACE_URL: ${{ vars.SPACE_URL || 'https://k1y0mi-ru-ai-text-detector.hf.space' }}
+          SPACE_URL: ${{ vars.SPACE_URL }}
         run: |
           echo "Пингую $SPACE_URL/health"
           curl -fsS --max-time 60 --retry 3 --retry-delay 10 "$SPACE_URL/health"

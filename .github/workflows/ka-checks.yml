@@ -1,0 +1,25 @@
+name: KA source and document checks
+on:
+  push:
+    paths: ["ka_detector/**", "ka_tests/**", ".github/workflows/ka-checks.yml", "requirements-ka*"]
+  pull_request:
+    paths: ["ka_detector/**", "ka_tests/**", ".github/workflows/ka-checks.yml", "requirements-ka*"]
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  documents-and-protocol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest==9.1.1 pypdf==6.21.2 defusedxml==0.7.1 python-docx==1.2.0 numpy==1.26.4 scikit-learn==1.5.2
+      - run: python -m compileall -q ka_detector ka_tests
+      - run: python -m pytest ka_tests -q -p no:cacheprovider -k "not real and not upstream_probability and not internal_api"
+      # Real-model parity/inference tests are a separate explicit local gate.
+      # CI does not download unlicensed weights or visitor documents.

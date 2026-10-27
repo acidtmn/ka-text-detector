@@ -1,0 +1,12 @@
+KA Text Detector
+New KA service, integration, evaluation and tooling changes:
+Copyright (c) 2026 Кирилл Александров / Код Александрова
+
+The original source and history of ru-ai-text-detector are retained.
+Original copyright: Copyright (c) 2026 k1y0miiii, MIT License.
+The complete original MIT notice is in LICENSE and must remain with copies.
+
+This repository does not establish a license for third-party model weights
+or training datasets. Base-model licenses do not automatically grant rights
+to independently fine-tuned weights or all training data.
+KA additions are provided under the MIT License, subject to these notices.

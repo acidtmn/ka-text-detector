@@ -52,3 +52,11 @@ samples/*.pdf
 # Сгенерированные отчёты
 *.report.md
 *.report.html
+
+# KA private artifacts and independently approved corpora.
+artifacts/
+corpora/private/
+runs/
+models/upstream-*/
+models/ka-*/
+.env
